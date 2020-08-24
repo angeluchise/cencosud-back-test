@@ -1,8 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const { getAllProduct, getProductByCode } = require("./services/products/product-service");
-
+const { getCheckout } = require("./services/checkout/checkout");
+var cors = require('cors');
 const app = express();
+
+app.use(cors());
 app.use(bodyParser.json());
 
 app.get("/product", (req, res) => {
@@ -17,15 +20,13 @@ app.get("/product/:code", (req, res) => {
 
 //Need to calculate total and discount
 app.post("/checkout", (req, res) => {
-  //
-  //
-
-  const result = {
-    total: 0,
-    totalDiscount: 0,
-    totalToPay: 0,
-    product: [],
-  };
+  // const result = {
+  //   total: 0,
+  //   totalDiscount: 0,
+  //   totalToPay: 0,
+  //   product: [],
+  // };
+  const result = getCheckout(req.body.codes);
   res.json(result);
 });
 

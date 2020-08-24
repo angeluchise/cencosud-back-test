@@ -1,7 +1,12 @@
 const products = require('../products/product-service');
 
-getCheckout = () => {
-    let getProducts = products.getAllProduct();
+
+calcPercentage = (price, percentage) => {
+    return price - Math.ceil(price * (percentage / 100));
+}
+
+getCheckout = (ids) => {
+    let getProducts = products.getProductByCodes(ids);
     let total = 0;
     let totalDiscount = 0;
     for (let product of getProducts) {
@@ -9,9 +14,10 @@ getCheckout = () => {
         totalDiscount += product.discount;
     }
     return {
-        totalProducts: getProducts.length,
+        product: getProducts,
         total,
-        totalDiscount
+        totalDiscount,
+        totalToPay: calcPercentage(total, totalDiscount),
     }
 }
 
